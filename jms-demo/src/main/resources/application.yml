@@ -1,0 +1,20 @@
+logging:
+  level:
+    org:
+      springframework:
+        retry: DEBUG
+    com:
+      example:
+        demo: DEBUG
+
+activemq:
+  broker:
+    username: admin
+    password: admin
+    url: "tcp://localhost:61616"
+
+retry:
+  backoff:
+    initialInterval: 3000
+    multiplier: 2.0
+    maxInterval: 10000

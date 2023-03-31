@@ -1,0 +1,5 @@
+elasticsearch:
+  url: localhost:9200
+  username: elastic
+  password: OetxMxDx*vX4lqGDw49X
+  certFilename: http_ca.crt
