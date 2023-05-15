@@ -1,12 +1,14 @@
 package com.example.demo;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.elasticsearch.annotations.Document;
 import org.springframework.data.elasticsearch.annotations.Field;
 import org.springframework.data.elasticsearch.annotations.FieldType;
 
 @Document(indexName = "log", createIndex = false)
-public class DemoEvent {
+@JsonDeserialize(using = DemoDeserializer.class)
+public class DemoEvent implements Cloneable {
 
     @Id
     private String id;
@@ -30,4 +32,12 @@ public class DemoEvent {
         this.detail = detail;
     }
 
+    @Override
+    public DemoEvent clone() {
+        try {
+            return (DemoEvent) super.clone();
+        } catch (CloneNotSupportedException e) {
+            throw new AssertionError();
+        }
+    }
 }
