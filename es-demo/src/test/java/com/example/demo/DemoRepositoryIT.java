@@ -13,6 +13,7 @@ import org.springframework.data.elasticsearch.core.ElasticsearchOperations;
 import org.springframework.data.elasticsearch.core.mapping.IndexCoordinates;
 import org.springframework.http.HttpStatus;
 import org.springframework.lang.Nullable;
+import org.springframework.test.context.junit.jupiter.EnabledIf;
 
 import java.util.*;
 import java.util.concurrent.*;
@@ -20,6 +21,7 @@ import java.util.concurrent.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
+@EnabledIf(expression = "#{environment['spring.profiles.active'] == 'local-int'}", loadContext = true)
 public class DemoRepositoryIT {
 
     @Autowired

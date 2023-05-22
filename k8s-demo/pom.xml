@@ -13,7 +13,7 @@
 	<groupId>io.jeffrey.demo</groupId>
 	<artifactId>k8s-demo</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>demo</name>
+	<name>k8s-demo</name>
 	<description>Demo project for Spring Boot and Kubernetes</description>
 
 	<properties>
