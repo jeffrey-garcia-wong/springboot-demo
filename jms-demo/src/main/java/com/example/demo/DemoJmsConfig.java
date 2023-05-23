@@ -1,20 +1,20 @@
 package com.example.demo;
 
+import jakarta.jms.ConnectionFactory;
+import jakarta.jms.Session;
 import org.apache.activemq.ActiveMQConnectionFactory;
 import org.apache.activemq.RedeliveryPolicy;
 import org.apache.activemq.command.ActiveMQQueue;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.jms.DefaultJmsListenerContainerFactoryConfigurer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.jms.annotation.EnableJms;
 import org.springframework.jms.config.DefaultJmsListenerContainerFactory;
 import org.springframework.jms.config.JmsListenerContainerFactory;
 import org.springframework.jms.core.JmsTemplate;
-
-import javax.jms.ConnectionFactory;
-import javax.jms.Session;
 
 @Configuration(proxyBeanMethods = false)
 @EnableJms
@@ -63,8 +63,7 @@ public class DemoJmsConfig {
 
     @Bean
     public JmsTemplate jmsTemplate(ConnectionFactory connectionFactory){
-        JmsTemplate template = new JmsTemplate();
-        template.setConnectionFactory(connectionFactory);
+        JmsTemplate template = new JmsTemplate(connectionFactory);
         return template;
     }
 
@@ -77,15 +76,15 @@ public class DemoJmsConfig {
 
     @Bean
     public JmsListenerContainerFactory<?> myFactory(
-            ConnectionFactory connectionFactory)
-    {
+            ConnectionFactory connectionFactory,
+            DefaultJmsListenerContainerFactoryConfigurer configurer
+    ) {
         DefaultJmsListenerContainerFactory factory = new DefaultJmsListenerContainerFactory();
-        factory.setConnectionFactory(connectionFactory);
         // You could still override some of Boot's default if necessary.
         factory.setConcurrency("1-2"); // auto-scaling consumers
         factory.setSessionAcknowledgeMode(Session.SESSION_TRANSACTED);
         factory.setSessionTransacted(true);
-
+        configurer.configure(factory, connectionFactory);
         return factory;
     }
 
