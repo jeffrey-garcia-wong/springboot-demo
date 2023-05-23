@@ -46,7 +46,7 @@
 		<dependency>
 			<groupId>org.apache.activemq.tooling</groupId>
 			<artifactId>activemq-junit</artifactId>
-			<version>5.16.6</version>
+			<version>5.18.1</version>
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
