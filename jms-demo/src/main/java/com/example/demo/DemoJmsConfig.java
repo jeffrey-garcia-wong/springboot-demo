@@ -6,7 +6,6 @@ import org.apache.activemq.command.ActiveMQQueue;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.autoconfigure.jms.DefaultJmsListenerContainerFactoryConfigurer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.jms.annotation.EnableJms;
@@ -78,20 +77,10 @@ public class DemoJmsConfig {
 
     @Bean
     public JmsListenerContainerFactory<?> myFactory(
-            ConnectionFactory connectionFactory,
-            DefaultJmsListenerContainerFactoryConfigurer configurer)
+            ConnectionFactory connectionFactory)
     {
         DefaultJmsListenerContainerFactory factory = new DefaultJmsListenerContainerFactory();
-        factory.setErrorHandler(e -> {
-            // handle exception thrown in listener
-            LOGGER.error(e.getMessage(), e);
-        });
-
         factory.setConnectionFactory(connectionFactory);
-
-        // This provides all boot's default to this factory, including the message converter
-        configurer.configure(factory, connectionFactory);
-
         // You could still override some of Boot's default if necessary.
         factory.setConcurrency("1-2"); // auto-scaling consumers
         factory.setSessionAcknowledgeMode(Session.SESSION_TRANSACTED);
