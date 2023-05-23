@@ -3,11 +3,8 @@ package com.example.demo;
 import org.apache.activemq.command.ActiveMQTextMessage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jms.annotation.JmsListener;
 import org.springframework.stereotype.Component;
-
-import javax.jms.JMSException;
 
 @Component
 public class DemoReceiver {
@@ -24,8 +21,8 @@ public class DemoReceiver {
         try {
             LOGGER.debug("Received <" + msg.getMessageId() + "> - " + msg.getText());
             demoClient.run();
-        } catch (JMSException e) {
-            // e.printStackTrace();
+        } catch (Exception e) {
+             e.printStackTrace();
         } finally {
             LOGGER.debug("process finished");
         }
