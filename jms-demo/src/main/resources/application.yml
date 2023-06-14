@@ -18,3 +18,16 @@ retry:
     initialInterval: 3000
     multiplier: 2.0
     maxInterval: 10000
+
+management:
+  endpoint:
+    health:
+      show-details: always
+      show-components: always
+      probes:
+        enabled: true
+  endpoints:
+    web:
+      exposure:
+        include: "health, info"
+      base-path: /
