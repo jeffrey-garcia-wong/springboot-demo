@@ -6,6 +6,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.jms.annotation.JmsListener;
 import org.springframework.stereotype.Component;
 
+import javax.jms.JMSException;
+
 @Component
 public class DemoReceiver {
     private static final Logger LOGGER = LoggerFactory.getLogger(DemoReceiver.class);
@@ -21,7 +23,7 @@ public class DemoReceiver {
         try {
             LOGGER.debug("Received <" + msg.getMessageId() + "> - " + msg.getText());
             demoClient.run();
-        } catch (Exception e) {
+        } catch (JMSException e) {
              e.printStackTrace();
         } finally {
             LOGGER.debug("process finished");

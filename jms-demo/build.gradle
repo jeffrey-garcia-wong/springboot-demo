@@ -1,6 +1,6 @@
 plugins {
 	id 'java'
-	id 'org.springframework.boot' version '3.1.0'
+	id 'org.springframework.boot' version '3.0.6'
 	id 'io.spring.dependency-management' version '1.1.0'
 }
 
@@ -18,14 +18,28 @@ repositories {
 dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	implementation 'org.springframework.boot:spring-boot-starter-actuator'
-	implementation 'org.springframework.boot:spring-boot-starter-activemq'
 	implementation 'org.springframework:spring-aspects'
 	implementation "org.springframework.retry:spring-retry"
+	/**
+	 * Apache activemq is not fully compatible with spring-boot 3.x
+	 * as of 28-May-2023, its latest version is 5.17.4 which is only supporting
+	 * up to spring-boot 2.7.12 (spring framework 5.3.27).
+	 * Lack of support for spring-boot 3.x (which uses jakarta.jms) means
+	 * activemq-broker (which still uses javax.jms) won't be compatible, and
+	 * hence require a manual downgrade of:
+	 * - spring-boot-starter-activemq to 2.7.12
+	 * - spring-jms (which uses javax.jms) to 5.3.27, and
+	 * - activemq-client to 5.17.4
+	 *
+	 * @TODO - Watch for future release of camel-activemq supports spring-boot 3.x
+	 */
+	implementation 'org.springframework.boot:spring-boot-starter-activemq:2.7.12'
+	implementation 'org.springframework:spring-jms:5.3.27'
+	implementation 'org.apache.activemq:activemq-client:5.17.4'
+	implementation 'org.apache.activemq:activemq-broker:5.17.4'
 
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
-	testImplementation "org.apache.activemq:activemq-broker:5.18.1"
-	testImplementation 'javax.jms:javax.jms-api:2.0.1'
-	testImplementation "org.apache.activemq.tooling:activemq-junit:5.18.1"
+	testImplementation "org.apache.activemq.tooling:activemq-junit:5.17.4"
 }
 
 tasks.named('test') {

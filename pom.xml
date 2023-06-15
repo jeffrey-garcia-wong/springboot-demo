@@ -20,5 +20,4 @@
         <module>jms-demo</module>
         <module>es-demo</module>
     </modules>
-
 </project>
