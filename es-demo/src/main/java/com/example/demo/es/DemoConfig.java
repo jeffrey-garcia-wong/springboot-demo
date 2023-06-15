@@ -1,4 +1,4 @@
-package com.example.demo;
+package com.example.demo.es;
 
 import org.apache.http.ssl.SSLContextBuilder;
 import org.apache.http.ssl.SSLContexts;

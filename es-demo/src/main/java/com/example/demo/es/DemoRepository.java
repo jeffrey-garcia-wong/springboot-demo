@@ -1,4 +1,4 @@
-package com.example.demo;
+package com.example.demo.es;
 
 import org.springframework.data.elasticsearch.repository.ElasticsearchRepository;
 import org.springframework.stereotype.Repository;

@@ -1,7 +1,6 @@
-package com.example.demo;
+package com.example.demo.es;
 
 import org.junit.jupiter.api.RepeatedTest;
-import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.parallel.Execution;
 import org.junit.jupiter.api.parallel.ExecutionMode;
 

@@ -1,6 +1,5 @@
-package com.example.demo;
+package com.example.demo.es;
 
-import org.apache.el.util.ExceptionUtils;
 import org.elasticsearch.client.Response;
 import org.elasticsearch.client.ResponseException;
 import org.junit.jupiter.api.Test;
@@ -8,9 +7,7 @@ import org.junit.jupiter.api.parallel.Execution;
 import org.junit.jupiter.api.parallel.ExecutionMode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.dao.DataAccessResourceFailureException;
 import org.springframework.data.elasticsearch.core.ElasticsearchOperations;
-import org.springframework.data.elasticsearch.core.mapping.IndexCoordinates;
 import org.springframework.http.HttpStatus;
 import org.springframework.lang.Nullable;
 import org.springframework.test.context.junit.jupiter.EnabledIf;

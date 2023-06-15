@@ -1,4 +1,4 @@
-package com.example.demo;
+package com.example.demo.es;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import org.springframework.data.annotation.Id;
