@@ -11,7 +11,7 @@ activemq:
   broker:
     username: admin
     password: admin
-    url: vm://embedded?broker.persistent=false,useShutdownHook=false
+    url: vm://embedded?broker.persistent=false&broker.useShutdownHook=false
 
 retry:
   backoff:
