@@ -19,5 +19,6 @@
         <module>k8s-demo</module>
         <module>jms-demo</module>
         <module>es-demo</module>
+        <module>camel-demo</module>
     </modules>
 </project>

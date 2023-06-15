@@ -1,0 +1,11 @@
+##active mq broker connection
+#spring.activemq.broker-url: tcp://localhost:61616
+
+#---
+## Embedded ActiveMQ Configuration Example
+spring:
+  activemq:
+    broker-url: vm://embedded?broker.persistent=false&broker.useShutdownHook=false
+    in-memory: true
+    pool:
+      enable: false
