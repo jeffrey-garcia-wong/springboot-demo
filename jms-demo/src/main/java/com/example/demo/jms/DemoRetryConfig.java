@@ -1,4 +1,4 @@
-package com.example.demo;
+package com.example.demo.jms;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;

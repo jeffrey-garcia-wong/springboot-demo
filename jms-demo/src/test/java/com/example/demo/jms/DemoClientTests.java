@@ -1,4 +1,4 @@
-package com.example.demo;
+package com.example.demo.jms;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

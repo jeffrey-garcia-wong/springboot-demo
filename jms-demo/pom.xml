@@ -10,11 +10,11 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 
-	<groupId>io.jeffrey.demo</groupId>
+	<groupId>com.example.demo.jms</groupId>
 	<artifactId>jms-demo</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>jms-demo</name>
-	<description>Demo project for Spring Boot</description>
+	<description>Demo project for Spring Boot integration with ActiveMQ using JMS</description>
 
 	<properties>
 		<java.version>17</java.version>

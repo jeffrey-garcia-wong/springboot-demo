@@ -1,4 +1,4 @@
-package com.example.demo;
+package com.example.demo.jms;
 
 import org.apache.activemq.command.ActiveMQTextMessage;
 import org.slf4j.Logger;
