@@ -7,6 +7,7 @@ import org.apache.camel.component.activemq.ActiveMQComponent;
 import org.apache.camel.component.jms.JmsComponent;
 import org.apache.camel.spring.boot.CamelContextConfiguration;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -40,26 +41,28 @@ public class DemoJmsConfig {
     }
 
     @Bean("jmsTransactionManager")
-    public PlatformTransactionManager transactionManager(ConnectionFactory connectionFactory) {
+    public PlatformTransactionManager transactionManager(
+            @Autowired @Qualifier("jmsConnectionFactory") ConnectionFactory connectionFactory
+    ) {
         JmsTransactionManager transactionManager = new JmsTransactionManager();
         transactionManager.setConnectionFactory(connectionFactory);
         return transactionManager;
     }
 
-    @Bean()
+    @Bean
     CamelContextConfiguration contextConfiguration(
-            @Autowired ConnectionFactory connectionFactory,
-            @Autowired PlatformTransactionManager transactionManager)
-    {
+            @Autowired @Qualifier("jmsConnectionFactory") ConnectionFactory connectionFactory,
+            @Autowired @Qualifier("jmsTransactionManager") PlatformTransactionManager transactionManager
+    ) {
         return new CamelContextConfiguration() {
             @Override
             public void beforeApplicationStart(CamelContext camelContext) {
-                JmsComponent jmsComponent = JmsComponent.jmsComponentTransacted(connectionFactory, transactionManager);
-                // required for consumer-level redelivery after rollback
-                jmsComponent.setCacheLevelName("CACHE_CONSUMER");
-                jmsComponent.setTransacted(true);
-                jmsComponent.getConfiguration().setConcurrentConsumers(1);
-                camelContext.addComponent("activemq", jmsComponent);
+                final ActiveMQComponent activeMQComponent = ActiveMQComponent.activeMQComponent();
+                activeMQComponent.setTransactionManager(transactionManager);
+                activeMQComponent.setConnectionFactory(connectionFactory);
+                activeMQComponent.setTransacted(true);
+                activeMQComponent.getConfiguration().setConcurrentConsumers(1);
+                camelContext.addComponent("activemq", activeMQComponent);
             }
 
             @Override
