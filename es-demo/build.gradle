@@ -21,7 +21,7 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-data-elasticsearch'
 
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
-    testImplementation "org.openjdk.jmh:jmh-core:1.36"
+    testImplementation "org.openjdk.jmh:jmh-core:1.37"
     testImplementation "org.openjdk.jmh:jmh-generator-annprocess:1.36"
 }
 
