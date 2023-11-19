@@ -20,5 +20,7 @@
         <module>jms-demo</module>
         <module>es-demo</module>
         <module>camel-demo</module>
+        <module>reactive-demo</module>
+        <module>kafka-demo</module>
     </modules>
 </project>

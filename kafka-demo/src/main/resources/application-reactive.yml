@@ -1,0 +1,23 @@
+### Spring Kafka
+---
+spring:
+  kafka:
+    bootstrap-servers: localhost:29092
+    consumer:
+      key-deserializer: org.apache.kafka.common.serialization.LongDeserializer
+      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      group-id: local.consumer.v1
+      properties:
+        isolation.level: read_committed
+        retry.backoff.ms: 100
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.LongSerializer
+      value-serializer: org.apache.kafka.common.serialization.StringSerializer
+      properties:
+        transactional.id: appTxId
+
+---
+app:
+  config:
+    input-topic: test_in
+    output-topic: test_out

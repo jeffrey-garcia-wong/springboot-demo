@@ -1,0 +1,67 @@
+### Spring Kafka
+---
+spring:
+  kafka:
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.LongSerializer
+      value-serializer: org.apache.kafka.common.serialization.StringSerializer
+      # For throughput optimization:
+      # batch-size setting gives the upper bound of the batch size to be sent.
+      # If incoming message rate is actually lower, kafka client will `linger`
+      # for the linger.ms time waiting for more records to show up, and may
+      # unexpectedly reduce throughput. For example, `linger.ms=50` would have
+      # the effect of reducing the number of requests sent but would add up to
+      # 50ms of latency to records sent in the absence of load.
+      # compression-type lz4 is recommended for performance over gzip due to
+      # high overhead.
+      compression-type: lz4
+      batch-size: 100000
+      properties:
+        linger.ms: 50
+        # Configurations below are default values provided by Kafka
+        # defining here explicitly for clarity on what values matter
+        # resiliency of message sending to Kafka.
+        # for de-duplication
+        enable.idempotence: true
+        max.in.flight.requests.per.connection: 5
+        # for unrecoverable error (host down)
+        reconnect.backoff.ms: 10000
+        reconnect.backoff.max.ms: 60000
+        # for intermittent error
+        max.block.ms: 60000
+        request.timeout.ms: 30000
+        retry.backoff.ms: 100
+        delivery.timeout.ms: 120000
+      retries: 2147483647
+      # for strongest guarantee of durability
+      acks: all
+    consumer:
+      group-id: consumer.local
+      key-deserializer: org.apache.kafka.common.serialization.LongDeserializer
+      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      # use manual commit
+      enable-auto-commit: false
+      properties:
+        max.poll.interval.ms: 300000
+    streams:
+      application-id: streamer.local
+      properties:
+        default.key.serde: org.apache.kafka.common.serialization.Serdes$LongSerde
+        default.value.serde: org.apache.kafka.common.serialization.Serdes$StringSerde
+        # non-recoverable error, log the error and skip to process next message
+        default.deserialization.exception.handler: org.apache.kafka.streams.errors.LogAndContinueExceptionHandler
+        # when `processing.guarantee` is configured to exactly_once_v2, Kafka Streams sets the internal
+        # embedded producer client with a transaction id to enable the idempotence and transactional
+        # messaging features, and also sets its consumer client with the read-committed mode to only
+        # fetch messages from committed transactions from the upstream producers.
+        processing.guarantee: exactly_once_v2
+        # use a similar replication factor as source topic to improve fault tolerance
+        replication.factor: 1 # only 1 kafka broker in local docker
+        # the number of concurrency to execute stream task, bounded by the number of source topic's partition
+        num.stream.threads: 1
+---
+app:
+  config:
+    input-topic: test_in
+    output-topic: test_out
+    state-store: test_cache

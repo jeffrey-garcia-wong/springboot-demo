@@ -1,0 +1,35 @@
+### Logging
+---
+logging:
+  level:
+    root: info
+    com.example.demo: debug
+
+### Enable Springboot graceful shutdown
+---
+server.shutdown: graceful
+spring:
+  lifecycle:
+    timeout-per-shutdown-phase: 30s
+
+### Spring Actuator
+management:
+  endpoint:
+    env:
+      show-values: always
+    health:
+      show-details: always
+      show-components: always
+      probes:
+        enabled: true
+  endpoints:
+    web:
+      exposure:
+        include: "health, info, env"
+      base-path: /
+
+### Spring Kafka
+---
+spring:
+  kafka:
+    bootstrap-servers: localhost:29092
