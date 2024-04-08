@@ -36,7 +36,7 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-activemq:2.7.12'
 	implementation 'org.springframework:spring-jms:5.3.27'
 	implementation 'org.apache.activemq:activemq-client:5.17.4'
-	implementation 'org.apache.activemq:activemq-broker:5.17.4'
+	implementation 'org.apache.activemq:activemq-broker:6.1.1'
 
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation "org.apache.activemq.tooling:activemq-junit:5.17.4"
