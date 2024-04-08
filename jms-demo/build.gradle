@@ -39,7 +39,7 @@ dependencies {
 	implementation 'org.apache.activemq:activemq-broker:5.17.4'
 
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
-	testImplementation "org.apache.activemq.tooling:activemq-junit:5.17.4"
+	testImplementation "org.apache.activemq.tooling:activemq-junit:6.1.1"
 }
 
 tasks.named('test') {
