@@ -56,7 +56,10 @@ public class DemoStreamProcessor {
     }
 
     @Autowired
-    Topology startKStream() {
+    Topology startKStream(
+            @Autowired
+            DemoProcessorSupplier processorSupplier
+    ) {
         // Construct a `KStream` from the input topic
         KStream<String, Models.User> kStreamIn = streamsBuilder
                 .stream(inputTopic,
@@ -64,6 +67,7 @@ public class DemoStreamProcessor {
                 );
 
         // Applies terminal processor to kStream operation
+        kStreamIn.process(processorSupplier);
 
         // debug output
         kStreamIn.peek((key,value) -> {
