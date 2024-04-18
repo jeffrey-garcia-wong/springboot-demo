@@ -11,20 +11,31 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
 
-    <groupId>com.example.demo.kafka</groupId>
-    <artifactId>kafka-demo</artifactId>
+    <groupId>com.example.demo.kafka.kstream.protobuf</groupId>
+    <artifactId>kafka-kstream-protobuf-demo</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>kafka-demo</name>
-    <description>Demo project for Spring Boot Kafka</description>
+    <name>kafka-kstream-protobuf-demo</name>
+    <description>Demo project for Spring Boot Kafka's KStream using protobuf</description>
 
     <properties>
         <java.version>17</java.version>
     </properties>
 
+    <repositories>
+        <repository>
+            <id>confluent</id>
+            <url>https://packages.confluent.io/maven/</url>
+        </repository>
+        <repository>
+            <id>central</id>
+            <url>https://repo1.maven.org/maven2/</url>
+        </repository>
+    </repositories>
+
     <dependencies>
         <dependency>
             <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-webflux</artifactId>
+            <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
 
         <dependency>
@@ -38,13 +49,15 @@
         </dependency>
 
         <dependency>
-            <groupId>org.apache.kafka</groupId>
-            <artifactId>kafka-clients</artifactId>
+            <groupId>com.google.protobuf</groupId>
+            <artifactId>protobuf-java</artifactId>
+            <version>3.22.2</version>
         </dependency>
 
         <dependency>
-            <groupId>io.projectreactor.kafka</groupId>
-            <artifactId>reactor-kafka</artifactId>
+            <groupId>io.confluent</groupId>
+            <artifactId>kafka-streams-protobuf-serde</artifactId>
+            <version>7.3.0</version>
         </dependency>
 
         <dependency>
@@ -54,28 +67,8 @@
         </dependency>
 
         <dependency>
-            <groupId>io.projectreactor</groupId>
-            <artifactId>reactor-test</artifactId>
-            <scope>test</scope>
-        </dependency>
-
-        <dependency>
             <groupId>org.apache.kafka</groupId>
             <artifactId>kafka-streams-test-utils</artifactId>
-            <scope>test</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>org.openjdk.jmh</groupId>
-            <artifactId>jmh-core</artifactId>
-            <version>1.36</version>
-            <scope>test</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>org.openjdk.jmh</groupId>
-            <artifactId>jmh-generator-annprocess</artifactId>
-            <version>1.36</version>
             <scope>test</scope>
         </dependency>
     </dependencies>
@@ -115,6 +108,26 @@
                         <include>**/*IT.java</include>
                     </includes>
                 </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>com.github.os72</groupId>
+                <artifactId>protoc-jar-maven-plugin</artifactId>
+                <version>3.11.4</version>
+                <configuration>
+                    <protocArtifact>com.google.protobuf:protoc:3.21.1</protocArtifact>
+                    <inputDirectories>
+                        <include>src/main/proto</include>
+                    </inputDirectories>
+                </configuration>
+                <executions>
+                    <execution>
+                        <phase>generate-sources</phase>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
     </build>

@@ -1,0 +1,60 @@
+### Logging
+---
+logging:
+  level:
+    root: info
+
+### Enable Springboot graceful shutdown
+---
+server.shutdown: graceful
+spring:
+  lifecycle:
+    timeout-per-shutdown-phase: 30s
+
+### Spring Actuator
+management:
+  endpoint:
+    env:
+      show-values: never
+    health:
+      show-details: always
+      show-components: always
+      probes:
+        enabled: true
+  endpoints:
+    web:
+      exposure:
+        include: "health, info, env, prometheus"
+      base-path: /
+      path-mapping:
+        prometheus: metrics
+
+### Spring Kafka
+---
+spring:
+  kafka:
+    bootstrap-servers: localhost:29092
+    properties:
+      schema.registry.url: "http://127.0.0.1:8081"
+    streams:
+      application-id: streamer.local
+      properties:
+        retry.backoff.ms: 5000
+        default.key.serde: org.apache.kafka.common.serialization.Serdes$StringSerde
+        default.value.serde: io.confluent.kafka.serializers.protobuf.KafkaProtobufDeserializer
+        # non-recoverable error, log the error and skip to process next message
+        default.deserialization.exception.handler: org.apache.kafka.streams.errors.LogAndContinueExceptionHandler
+        # when `processing.guarantee` is configured to exactly_once_v2, Kafka Streams sets the internal
+        # embedded producer client with a transaction id to enable the idempotence and transactional
+        # messaging features, and also sets its consumer client with the read-committed mode to only
+        # fetch messages from committed transactions from the upstream producers.
+        processing.guarantee: exactly_once_v2
+        replication.factor: 1
+        # the number of concurrency to execute stream task, bounded by the number of source topic's partition
+        num.stream.threads: 1
+
+### App specific
+---
+app:
+  config:
+    input-topic: test_in
