@@ -1,0 +1,14 @@
+---
+spring:
+  datasource:
+    hikari:
+      minimum-idle: 1
+      maximum-pool-size: 4
+    driver-class-name: oracle.jdbc.OracleDriver
+    url: jdbc:oracle:thin:@localhost:1521:xe
+    username: system
+    password: oracle
+  properties:
+    hibernate:
+      dialect: org.hibernate.dialect.OracleDialect
+      generate_statistics: true

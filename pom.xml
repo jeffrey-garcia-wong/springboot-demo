@@ -23,5 +23,6 @@
         <module>reactive-demo</module>
         <module>kafka-demo</module>
         <module>kafka-kstream-protobuf-demo</module>
+        <module>oracle-jpa-demo</module>
     </modules>
 </project>
