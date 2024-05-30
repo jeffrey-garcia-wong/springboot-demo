@@ -11,10 +11,23 @@ activemq:
   broker:
     username: admin
     password: admin
-    url: "tcp://localhost:61616"
+    url: vm://embedded?broker.persistent=false&broker.useShutdownHook=false
 
 retry:
   backoff:
     initialInterval: 3000
     multiplier: 2.0
     maxInterval: 10000
+
+management:
+  endpoint:
+    health:
+      show-details: always
+      show-components: always
+      probes:
+        enabled: true
+  endpoints:
+    web:
+      exposure:
+        include: "health, info"
+      base-path: /

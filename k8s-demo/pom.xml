@@ -10,7 +10,7 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 
-	<groupId>io.jeffrey.demo</groupId>
+	<groupId>com.example.demo.k8s</groupId>
 	<artifactId>k8s-demo</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>k8s-demo</name>
@@ -76,6 +76,7 @@
 				<configuration>
 					<includes>
 						<include>**/*Tests.java</include>
+						<include>**/*IT.java</include>
 					</includes>
 				</configuration>
 			</plugin>
