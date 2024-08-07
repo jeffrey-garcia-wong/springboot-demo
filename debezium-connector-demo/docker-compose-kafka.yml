@@ -1,0 +1,62 @@
+---
+version: '3.4'
+
+services:
+  kafka:
+    container_name: "kafka"
+    image: registry-adapter.tools.cosmic.sky/core-platform/csp-rights/release/raft-kafka:latest
+    user: "65534:65534"
+    environment:
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT,CONTROLLER:PLAINTEXT
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT_HOST://kafka:29092,PLAINTEXT://localhost:9092
+      KAFKA_LISTENERS: PLAINTEXT_HOST://0.0.0.0:29092,CONTROLLER://localhost:29093,PLAINTEXT://0.0.0.0:9092
+      CLUSTER_ID: MkU3OEVBNTcwNTJENDM2Qk
+      KAFKA_AUTO_CREATE_TOPICS_ENABLE: "true"
+      KAFKA_MESSAGE_MAX_BYTES: "2000000"
+      KAFKA_REST_BOOTSTRAP_SERVERS: "localhost:9092"
+      KAFKA_REST_LISTENERS: "http://0.0.0.0:8082"
+    healthcheck:
+      test: curl -u superUser:superUser -fail --silent --insecure http://localhost:8082/v3/clusters/ --output /dev/null || exit 1
+      interval: 10s
+      retries: 5
+      start_period: 15s
+    ports:
+      - "9092:9092"
+      - "8082:8082"
+
+networks:
+  default:
+    name: oracle-jpa-demo_default
+    external: true
+
+#  kafka:
+#    image: confluentinc/cp-server:latest
+#    ports:
+#      - "9092:9092"
+#      - "9093:9093"
+#      - "9012:9012"
+#      - "8082:8082"
+#    environment:
+#      KAFKA_NODE_ID: 1
+#      KAFKA_PROCESS_ROLES: 'controller'
+#      KAFKA_CONTROLLER_QUORUM_VOTERS: '1@kafka:9093'
+#      KAFKA_INTER_BROKER_LISTENER_NAME: 'PLAINTEXT'
+#      KAFKA_CONTROLLER_LISTENER_NAMES: 'CONTROLLER'
+#      KAFKA_LISTENERS: 'CONTROLLER://kafka:9093'
+#      CLUSTER_ID: MkU3OEVBNTcwNTJENDM2Qk
+#      CONFLUENT_METRICS_REPORTER_BOOTSTRAP_SERVERS: localhost:9092
+
+#  kafka:
+#    image: confluentinc/confluent-local:7.4.1
+#    ports:
+#      - "9092:9092"
+#      - "8082:8082"
+#    environment:
+#      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT,CONTROLLER:PLAINTEXT
+#      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT_HOST://kafka:29092,PLAINTEXT://localhost:9092
+#      KAFKA_LISTENERS: PLAINTEXT_HOST://0.0.0.0:29092,CONTROLLER://localhost:29093,PLAINTEXT://0.0.0.0:9092
+#      CLUSTER_ID: MkU3OEVBNTcwNTJENDM2Qk
+#      KAFKA_AUTO_CREATE_TOPICS_ENABLE: "true"
+#      KAFKA_MESSAGE_MAX_BYTES: "2000000"
+#      KAFKA_REST_BOOTSTRAP_SERVERS: "localhost:9092"
+#      KAFKA_REST_LISTENERS: "http://0.0.0.0:8082"

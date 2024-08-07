@@ -42,8 +42,11 @@ spring:
         request.timeout.ms: 30000
         retry.backoff.ms: 100
         delivery.timeout.ms: 120000
+      # max retry attempt
       retries: 2147483647
-      # for strongest guarantee of durability
+      # for strongest guarantee of durability at the expense of latency
+      # producer will wait for a success response from the broker once all in-sync
+      # replicas received the message
       acks: all
     consumer:
       group-id: consumer.local
