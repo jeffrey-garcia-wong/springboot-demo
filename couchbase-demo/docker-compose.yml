@@ -1,0 +1,15 @@
+---
+version: '3.4'
+
+services:
+  db:
+    image: couchbase:community-7.6.2
+    container_name: db
+    healthcheck:
+      test: curl -u superUser:superUser -fail --silent --insecure http://db:8091/ --output /dev/null || exit 1
+      interval: 10s
+      retries: 5
+      start_period: 15s
+    ports:
+      - "8091-8096:8091-8096"
+      - "11210-11211:11210-11211"

@@ -25,5 +25,6 @@
         <module>kafka-kstream-protobuf-demo</module>
         <module>oracle-jpa-demo</module>
         <module>debezium-connector-demo</module>
+        <module>couchbase-demo</module>
     </modules>
 </project>

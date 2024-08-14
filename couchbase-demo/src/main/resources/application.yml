@@ -1,0 +1,43 @@
+### Logging
+---
+logging:
+  level:
+    root: info
+    org.hibernate.SQL: debug
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n"
+
+### Enable Springboot graceful shutdown
+---
+server.shutdown: graceful
+spring:
+  lifecycle:
+    timeout-per-shutdown-phase: 30s
+
+### Spring Actuator
+management:
+  endpoint:
+    env:
+      show-values: always
+    health:
+      show-details: always
+      show-components: always
+      probes:
+        enabled: true
+  endpoints:
+    web:
+      exposure:
+        include: "health, info, env, prometheus"
+      base-path: /
+      path-mapping:
+        prometheus: metrics
+
+### Couchbase configuration
+---
+spring:
+  couchbase:
+    bootstrap-hosts: localhost
+    bucket:
+      name: demo
+      user: admin
+      password: password
