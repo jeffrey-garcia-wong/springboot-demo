@@ -2,6 +2,7 @@ package com.example.demo.kafka;
 
 import com.example.demo.kafka.client.DemoClientApp;
 import com.example.demo.kafka.kstream.DemoKStreamApp;
+import com.example.demo.kafka.multikstream.DemoMultiKStreamApp;
 import com.example.demo.kafka.reactive.DemoReactiveApp;
 import org.springframework.boot.SpringApplication;
 
@@ -19,6 +20,10 @@ public class DemoKafkaApplication {
             }
             case "reactive": {
                 SpringApplication.run(DemoReactiveApp.class);
+                break;
+            }
+            case "multi-kstream": {
+                SpringApplication.run(DemoMultiKStreamApp.class);
                 break;
             }
             default:
