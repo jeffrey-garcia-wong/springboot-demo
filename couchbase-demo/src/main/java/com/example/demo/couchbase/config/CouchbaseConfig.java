@@ -4,16 +4,21 @@ import com.couchbase.client.core.error.BucketNotFoundException;
 import com.couchbase.client.core.error.UnambiguousTimeoutException;
 import com.couchbase.client.java.Bucket;
 import com.couchbase.client.java.Cluster;
+import com.couchbase.client.java.codec.JacksonJsonSerializer;
+import com.couchbase.client.java.env.ClusterEnvironment;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.data.couchbase.config.AbstractCouchbaseConfiguration;
 
 import java.time.Duration;
 
 @Slf4j
 @Configuration(proxyBeanMethods = false)
-public class CouchbaseConfig {
+public class CouchbaseConfig extends AbstractCouchbaseConfiguration {
 
     @Value("#{systemEnvironment['DB_CONN_STR'] ?: '${spring.couchbase.bootstrap-hosts:localhost}'}")
     private String host;
@@ -26,6 +31,26 @@ public class CouchbaseConfig {
 
     @Value("${spring.couchbase.bucket.name:demo}")
     private String bucketName;
+
+    @Override
+    public String getConnectionString() {
+        return host;
+    }
+
+    @Override
+    public String getUserName() {
+        return username;
+    }
+
+    @Override
+    public String getPassword() {
+        return password;
+    }
+
+    @Override
+    public String getBucketName() {
+        return bucketName;
+    }
 
     /**
      * NOTE: If connecting to Couchbase Capella, you must enable TLS.
@@ -43,8 +68,9 @@ public class CouchbaseConfig {
      * see the commented-out code in this method for an example.
      */
     // FIXME: fail-fast implementation upon startup
+    @Override
     @Bean(destroyMethod = "disconnect")
-    Cluster getCouchbaseCluster() {
+    public Cluster couchbaseCluster(ClusterEnvironment couchbaseClusterEnvironment) {
         try {
             log.debug("Connecting to Couchbase cluster at " + host);
             Cluster cluster = Cluster.connect(host, username, password);
@@ -58,12 +84,11 @@ public class CouchbaseConfig {
             log.error("Could not connect to Couchbase cluster at " + host, e);
             throw e;
         }
-
     }
 
     // FIXME: fail-fast implementation upon startup
     @Bean
-    Bucket getCouchbaseBucket(Cluster cluster) {
+    Bucket couchbaseBucket(Cluster cluster) {
         try {
             if (!cluster.buckets().getAllBuckets().containsKey(bucketName)) {
                 throw new BucketNotFoundException("Bucket " + bucketName + " does not exist");
@@ -83,4 +108,17 @@ public class CouchbaseConfig {
             throw e;
         }
     }
+
+//    @Autowired
+//    private ObjectMapper objectMapper;
+//
+//    @Override
+//    public ObjectMapper couchbaseObjectMapper(){
+//        return objectMapper;
+//    }
+//
+//    @Override
+//    protected void configureEnvironment(final ClusterEnvironment.Builder builder) {
+//        builder.jsonSerializer(JacksonJsonSerializer.create(objectMapper));
+//    }
 }
