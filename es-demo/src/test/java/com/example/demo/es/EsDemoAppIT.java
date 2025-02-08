@@ -9,7 +9,7 @@ import org.springframework.test.context.TestPropertySource;
 	// isolate the elasticsearch data repository layer so the test can run without it
 	"spring.elasticsearch.enabled = false",
 })
-class DemoApplicationIT {
+class EsDemoAppIT {
 
 	@Test
 	void contextLoads() {

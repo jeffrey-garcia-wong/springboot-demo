@@ -10,7 +10,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.ApplicationContext;
 
 @SpringBootTest
-public class DemoApplicationIT {
+public class CamelDemoAppIT {
 
 //    @Autowired
 //    private CamelContext camelContext;

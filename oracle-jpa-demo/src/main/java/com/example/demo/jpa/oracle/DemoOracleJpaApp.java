@@ -13,9 +13,9 @@ import javax.sql.DataSource;
 
 @Slf4j
 @SpringBootApplication
-public class DemoOracleJpaApplication {
+public class DemoOracleJpaApp {
     public static void main(String[] args) {
-        final SpringApplication application = new SpringApplication(DemoOracleJpaApplication.class);
+        final SpringApplication application = new SpringApplication(DemoOracleJpaApp.class);
         application.setWebApplicationType(WebApplicationType.SERVLET);
         final ConfigurableApplicationContext applicationContext = application.run(args);
     }

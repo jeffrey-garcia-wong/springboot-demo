@@ -12,7 +12,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.jms.core.JmsTemplate;
 
 @SpringBootTest
-public class DemoApplicationIT {
+public class JmsDemoAppIT {
 
     private static BrokerService broker;
 

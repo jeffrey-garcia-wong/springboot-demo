@@ -9,10 +9,10 @@ import org.springframework.data.elasticsearch.core.IndexOperations;
 import java.util.List;
 
 @SpringBootApplication
-public class DemoApplication {
+public class EsDemoApp {
 
 	public static void main(String[] args) {
-		ConfigurableApplicationContext applicationContext = SpringApplication.run(DemoApplication.class, args);
+		ConfigurableApplicationContext applicationContext = SpringApplication.run(EsDemoApp.class, args);
 
 		DemoEvent demoEvent = new DemoEvent();
 		demoEvent.setDetail("hello");
