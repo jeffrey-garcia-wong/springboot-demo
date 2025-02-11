@@ -1,0 +1,51 @@
+### Logging
+---
+logging:
+  level:
+    root: info
+    org.hibernate.SQL: debug
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n"
+
+# spring JPA configuration
+---
+spring:
+  # enable initial data loading via data.sql scripts
+  sql.init.mode: always
+  jpa:
+    # allows Hibernate to create tables before inserting the data into them
+    defer-datasource-initialization: true
+    show-sql: true
+    # allows Hibernate to update the schema automatically
+    hibernate:
+      ddl-auto: update
+  datasource:
+    hikari:
+      # Defines the connection pool size for DB access
+      # minimum should be 1 and maximum must be <= no. of
+      # concurrent kafka consumer threads within the service
+      # (see spring.kafka.streams.properties.num.stream.threads)
+      # [IMPORTANT]
+      # maximum connection MUST be <= the maximum number of
+      # sessions allowed per the DB service account set by DBA
+      # For example:
+      # if DBA configure the service account max sessions = 10,
+      # and the service will startup 4 concurrent kafka's consumers,
+      # the maximum scalable instances of the service is 2, because
+      # 4 (no. of consumers) * 2 (no. of app instance) < 10 (max. allowable DB session)
+      minimum-idle: 1
+      maximum-pool-size: 1
+    driver-class-name: org.h2.Driver
+    url: jdbc:h2:mem:testdb
+    username: sa
+    password: password
+  properties:
+    hibernate:
+      dialect: org.hibernate.dialect.H2Dialect
+
+# H2 console
+---
+spring:
+  h2:
+    console:
+      enabled: true
