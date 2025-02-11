@@ -13,15 +13,11 @@ import org.springframework.context.annotation.Bean;
 import java.util.List;
 
 @SpringBootApplication
-<<<<<<< Updated upstream:k8s-demo/src/main/java/com/example/demo/k8s/DemoApplication.java
-public class DemoApplication {
-=======
 public class K8sDemoApp {
 	private static final Logger LOGGER = LoggerFactory.getLogger(K8sDemoApp.class);
->>>>>>> Stashed changes:k8s-demo/src/main/java/com/example/demo/k8s/K8sDemoApp.java
 
 	public static void main(String[] args) {
-		SpringApplication.run(DemoApplication.class, args);
+		SpringApplication.run(K8sDemoApp.class, args);
 	}
 
 	@Bean
