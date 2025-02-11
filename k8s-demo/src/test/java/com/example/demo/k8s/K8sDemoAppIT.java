@@ -7,7 +7,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.ApplicationContext;
 
 @SpringBootTest
-class DemoApplicationIT {
+class K8sDemoAppIT {
 
 	@Autowired
 	ApplicationContext context;
