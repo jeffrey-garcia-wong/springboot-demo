@@ -1,0 +1,14 @@
+### Spring Actuator
+management:
+  endpoint:
+    env:
+      show-values: always
+    health:
+      show-details: always
+      show-components: always
+      probes:
+        enabled: true
+  endpoints:
+    web:
+      exposure:
+        include: "*"

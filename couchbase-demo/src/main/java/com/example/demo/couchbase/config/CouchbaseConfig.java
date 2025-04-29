@@ -1,11 +1,12 @@
 package com.example.demo.couchbase.config;
 
-import com.couchbase.client.core.error.BucketNotFoundException;
-import com.couchbase.client.core.error.UnambiguousTimeoutException;
+import com.couchbase.client.core.error.*;
 import com.couchbase.client.java.Bucket;
 import com.couchbase.client.java.Cluster;
 import com.couchbase.client.java.codec.JacksonJsonSerializer;
 import com.couchbase.client.java.env.ClusterEnvironment;
+import com.couchbase.client.java.manager.collection.CollectionSpec;
+import com.couchbase.client.java.manager.query.CreatePrimaryQueryIndexOptions;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +16,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.data.couchbase.config.AbstractCouchbaseConfiguration;
 
 import java.time.Duration;
+import java.util.List;
 
 @Slf4j
 @Configuration(proxyBeanMethods = false)
@@ -95,6 +97,7 @@ public class CouchbaseConfig extends AbstractCouchbaseConfiguration {
             }
             Bucket bucket = cluster.bucket(bucketName);
             bucket.waitUntilReady(Duration.ofSeconds(15));
+            createScopeAndCollection(bucket);
             return bucket;
         } catch (UnambiguousTimeoutException e) {
             log.error("Connection to bucket " + bucketName + " timed out", e);
@@ -106,6 +109,60 @@ public class CouchbaseConfig extends AbstractCouchbaseConfiguration {
             log.error(e.getClass().getName());
             log.error("Could not connect to bucket " + bucketName, e);
             throw e;
+        }
+    }
+
+    private void createScopeAndCollection(Bucket bucket) {
+        final String scope = "rights-handler";
+        try {
+            bucket.collections().createScope(scope);
+        } catch (ScopeExistsException e) {
+            log.info("Scope already exists, skipping");
+        }
+
+        bucket.collections()
+                .getAllScopes()
+                .stream()
+                .filter(scopeSpec -> scopeSpec.name().equals(scope))
+                .findFirst().map(scopeSpec -> {
+                    for (String collectionName : List.of("item")) {
+                        if (scopeSpec.collections().stream().noneMatch(_collection -> _collection.name().equals(collectionName))) {
+                            // collection creation is asynchronous
+                            log.info("Creating collection {}", collectionName);
+                            bucket.collections().createCollection(CollectionSpec.create(collectionName, scope));
+                            log.info("Collection {} created", collectionName);
+                        } else {
+                            log.info("Collection {} already exists, skipping", collectionName);
+                        }
+                        createPrimaryIndex(scope, collectionName, bucket);
+                    }
+                    return scopeSpec;
+                }).orElseGet(() -> {
+                    log.error("Scope {} does not exist", scope);
+                    throw ScopeNotFoundException.forScope(scope);
+                });
+    }
+
+    private void createPrimaryIndex(String scope, String collectionName, Bucket bucket) {
+        // reliably suspend index creation until collection is ready
+        final int maxAttempts = 5;
+        final long waitInterval = 1000L;
+        for (int i=1; i<=maxAttempts; i++) {
+            try {
+                // primary index
+                log.info("Creating primary index on collection {}", collectionName);
+                bucket.scope(scope).collection(collectionName).queryIndexes().createPrimaryIndex(CreatePrimaryQueryIndexOptions.createPrimaryQueryIndexOptions().ignoreIfExists(true));
+                log.info("Primary index created on collection {}", collectionName);
+                break;
+            } catch (IndexFailureException e) {
+                if (i>=maxAttempts)
+                    throw e;
+                else {
+                    try {
+                        Thread.sleep(waitInterval);
+                    } catch (InterruptedException ex) {}
+                }
+            }
         }
     }
 

@@ -4,6 +4,18 @@ version: '3.4'
 services:
   db:
     image: couchbase:community-7.6.2
+    environment:
+      - COUCHBASE_DATA_MEMORY=1024
+      - COUCHBASE_INDEX_MEMORY=512
+      - COUCHBASE_USERNAME=admin
+      - COUCHBASE_PASSWORD=password
+      - COUCHBASE_CLUSTER_NAME=gap-services
+      - COUCHBASE_BUCKET_NAME=cp-rights-data
+      - TOXIPROXY_HOST=gap-toxiproxy
+      - TOXIPROXY_MGMT_PORT=58091
+      - TOXIPROXY_CAPI_PORT=58092
+      - TOXIPROXY_N1QL_PORT=58093
+      - TOXIPROXY_KV_PORT=51210
     container_name: db
     healthcheck:
       test: curl -u superUser:superUser -fail --silent --insecure http://db:8091/ --output /dev/null || exit 1
@@ -11,5 +23,10 @@ services:
       retries: 5
       start_period: 15s
     ports:
-      - "8091-8096:8091-8096"
-      - "11210-11211:11210-11211"
+#      - "8091-8096:8091-8096"
+#      - "11210-11211:11210-11211"
+      - "8091:8091"
+      - "8092:8092"
+      - "8093:8093"
+      - "8094:8094"
+      - "11210:11210"

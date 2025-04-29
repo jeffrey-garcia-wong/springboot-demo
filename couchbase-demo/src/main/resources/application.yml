@@ -36,8 +36,8 @@ management:
 ---
 spring:
   couchbase:
-    bootstrap-hosts: localhost
+    bootstrap-hosts: "localhost:11210"
     bucket:
-      name: demo
+      name: cp-rights-data
       user: admin
       password: password

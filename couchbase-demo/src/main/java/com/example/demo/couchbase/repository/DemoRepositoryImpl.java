@@ -9,6 +9,7 @@ import com.example.demo.couchbase.config.CouchbaseConfig;
 import com.example.demo.couchbase.entity.Item;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.couchbase.repository.CouchbaseRepository;
 import org.springframework.data.util.Pair;
 import org.springframework.stereotype.Repository;
 
@@ -17,13 +18,13 @@ import java.util.List;
 
 @Slf4j
 @Repository
-public class DemoRepository {
+public class DemoRepositoryImpl {
 
     private final Cluster cluster;
     private final Collection itemCollection;
     private final CouchbaseConfig couchbaseConfig;
 
-    public DemoRepository(
+    public DemoRepositoryImpl(
             @Autowired
             Cluster cluster,
             @Autowired
@@ -32,7 +33,8 @@ public class DemoRepository {
             CouchbaseConfig couchbaseConfig
     ) {
         this.cluster = cluster;
-        this.itemCollection = bucket.scope("_default").collection("item");
+        this.itemCollection = bucket.scope("rights-handler").collection("item");
+//        this.itemCollection = bucket.scope("_default").collection("item");
         this.couchbaseConfig = couchbaseConfig;
     }
 

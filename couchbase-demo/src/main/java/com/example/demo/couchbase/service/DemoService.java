@@ -1,7 +1,7 @@
 package com.example.demo.couchbase.service;
 
 import com.example.demo.couchbase.entity.Item;
-import com.example.demo.couchbase.repository.DemoRepository;
+import com.example.demo.couchbase.repository.DemoRepositoryImpl;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -9,17 +9,17 @@ import java.util.List;
 @Service
 public class DemoService {
 
-    private final DemoRepository demoRepository;
+    private final DemoRepositoryImpl demoRepositoryImpl;
 
-    public DemoService(DemoRepository demoRepository) {
-        this.demoRepository = demoRepository;
+    public DemoService(DemoRepositoryImpl demoRepositoryImpl) {
+        this.demoRepositoryImpl = demoRepositoryImpl;
     }
 
     public Item upsert(Item item) {
-        return demoRepository.upsert(item).getSecond();
+        return demoRepositoryImpl.upsert(item).getSecond();
     }
 
     public List<Item> getAll() {
-        return demoRepository.findAllItems();
+        return demoRepositoryImpl.findAllItems();
     }
 }

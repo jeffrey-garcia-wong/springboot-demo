@@ -22,10 +22,10 @@ import java.util.concurrent.Future;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest
-public class DemoRepositoryIT {
+public class DemoRepositoryImplIT {
 
     @Autowired
-    private DemoRepository repository;
+    private DemoRepositoryImpl repository;
 
     @BeforeEach
     void setUp() {
